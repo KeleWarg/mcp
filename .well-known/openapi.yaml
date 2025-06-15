@@ -1,18 +1,20 @@
-openapi: "3.1.0"
+openapi: "3.0.1"
 info:
-  title: Kele LeadGen MCP Gateway
+  title: "Kele LeadGen MCP Gateway"
   version: "0.5"
+  description: "API for conversational personal-loan lead generation."
 servers:
-  - url: https://mcp-sandy.vercel.app      # ← must be absolute, no quotes needed
+  - url: https://mcp-sandy.vercel.app
 paths:
   /registry:
     get:
-      summary: List available verticals
+      summary: "List verticals"
       responses:
-        "200": { description: OK }
+        "200":
+          description: "OK"
   /personal_loan/question/{step}:
     get:
-      summary: Get question object
+      summary: "Get question object"
       parameters:
         - name: step
           in: path
@@ -23,29 +25,38 @@ paths:
           required: false
           schema: { type: string }
       responses:
-        "200": { description: Question object }
+        "200":
+          description: "Question object"
   /personal_loan/answer:
     post:
-      summary: Submit answers
+      summary: "Submit answers"
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: "#/components/schemas/AnswerPayload" }
+            schema:
+              $ref: "#/components/schemas/AnswerPayload"
       responses:
-        "200": { description: Accepted }
+        "200":
+          description: "Accepted"
   /metrics:
     get:
-      summary: Token-usage metrics
+      summary: "Token-usage metrics"
       responses:
-        "200": { description: Metrics }
+        "200":
+          description: "Metrics"
 components:
   schemas:
     AnswerPayload:
       type: object
       required:
-        [loan_amount, loan_purpose, credit_score_band,
-         employment_status, annual_income, state, consent_tcpa]
+        - loan_amount
+        - loan_purpose
+        - credit_score_band
+        - employment_status
+        - annual_income
+        - state
+        - consent_tcpa
       properties:
         loan_amount:       { type: number }
         loan_purpose:      { type: string }
