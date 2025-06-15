@@ -1,3 +1,11 @@
+# --- add to app/bq.py (top) ---
+import os, json, tempfile
+cred_json = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+if cred_json and not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+    tmp.write(cred_json.encode()); tmp.close()
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = tmp.name
+# --- end snippet ---
 
 import os, time, logging, json
 try:
