@@ -1,0 +1,46 @@
+{
+  "info": {
+    "name": "MCP Personal Loan API",
+    "_postman_id": "ba5bf589-1732-4bf3-ae68-a415cf79ea05",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:9000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Get Registry",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/registry"
+      }
+    },
+    {
+      "name": "Get Question 0",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/personal_loan/question/0"
+      }
+    },
+    {
+      "name": "Submit Answer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/personal_loan/answer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"loan_amount\": 15000,\n  \"loan_purpose\": \"debt_consolidation\",\n  \"credit_score_band\": \"670-739\",\n  \"employment_status\": \"employed\",\n  \"annual_income\": 85000,\n  \"state\": \"CA\",\n  \"consent_tcpa\": true\n}"
+        }
+      }
+    }
+  ]
+}
