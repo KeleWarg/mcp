@@ -1,0 +1,14 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Instant Personal-Loan Pre-Qual",
+    "name_for_model": "kele_leadgen_loans",
+    "description_for_human": "Qualify users for a personal-loan offer directly in chat.",
+    "description_for_model": "Collect loan_amount, loan_purpose, credit_score_band, employment_status, annual_income, state, TCPA consent; then POST to /personal_loan/answer and return the gateway response.",
+    "auth": { "type": "none" },
+    "api": {
+      "type": "openapi",
+      "url": "https://mcp-sandy.vercel.app/.well-known/openapi.yaml"
+    },
+    "contact_email": "support@kele.dev",
+    "legal_info_url": "https://kele.dev/terms"
+  }

@@ -1,0 +1,52 @@
+openapi: "3.1.0"
+info:
+  title: "Kele LeadGen MCP Gateway"
+  version: "0.5"
+servers:
+  - url: https://mcp-sandy.vercel.app
+paths:
+  /registry:
+    get:
+      summary: List available verticals
+      responses: { "200": { "description": "OK" } }
+  /personal_loan/question/{step}:
+    get:
+      summary: Get question object
+      parameters:
+        - name: step
+          in: path
+          required: true
+          schema: { type: integer }
+        - name: variant
+          in: query
+          required: false
+          schema: { type: string }
+      responses: { "200": { "description": "Question object" } }
+  /personal_loan/answer:
+    post:
+      summary: Submit answers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AnswerPayload" }
+      responses: { "200": { "description": "Accepted" } }
+  /metrics:
+    get:
+      summary: Token-usage metrics
+      responses: { "200": { "description": "Metrics" } }
+components:
+  schemas:
+    AnswerPayload:
+      type: object
+      required:
+        [loan_amount, loan_purpose, credit_score_band, employment_status,
+         annual_income, state, consent_tcpa]
+      properties:
+        loan_amount:        { type: number }
+        loan_purpose:       { type: string }
+        credit_score_band:  { type: string }
+        employment_status:  { type: string }
+        annual_income:      { type: number }
+        state:              { type: string }
+        consent_tcpa:       { type: boolean }
