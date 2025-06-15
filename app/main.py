@@ -48,22 +48,39 @@ def get_question(request: Request, vertical: str, step: int, variant: str | None
 
 @app.post("/{vertical}/answer")
 async def post_answer(request: Request, vertical: str, variant: str | None = None):
-    t0=time.time()
-    schema=load_schema(vertical)
-    payload=await request.json()
-    variant_id = variant or request.headers.get("X-Variant")
-    missing=[f["@id"] for f in schema["fields"] if f["priority"]=="P0" and f["@id"] not in payload]
-    if missing:
-        event={"event":"validation_error","vertical":vertical,"missing":missing,"variant":variant_id}
-        log_local(event); bq.write(event)
-        raise HTTPException(status_code=422, detail={"missing":missing})
-    score=score_payload(payload)
-    latency_ms=round((time.time()-t0)*1000,2)
-    # Forward to CRM
-    crm.send({**payload,"score":score,"variant":variant_id})
-    event={"event":"answer_submitted","vertical":vertical,"score":score,"latency_ms":latency_ms,"variant":variant_id}
-    log_local(event); bq.write(event)
-    return {"status":"accepted","score":score,"latency_ms":latency_ms,"variant":variant_id}
+    try:
+        t0=time.time()
+        schema=load_schema(vertical)
+        payload=await request.json()
+        variant_id = variant or request.headers.get("X-Variant")
+        missing=[f["@id"] for f in schema["fields"] if f["priority"]=="P0" and f["@id"] not in payload]
+        if missing:
+            event={"event":"validation_error","vertical":vertical,"missing":missing,"variant":variant_id}
+            log_local(event)
+            try:
+                bq.write(event)
+            except Exception as e:
+                logging.warning(f"BQ write failed: {e}")
+            raise HTTPException(status_code=422, detail={"missing":missing})
+        score=score_payload(payload)
+        latency_ms=round((time.time()-t0)*1000,2)
+        # Forward to CRM
+        try:
+            crm.send({**payload,"score":score,"variant":variant_id})
+        except Exception as e:
+            logging.warning(f"CRM send failed: {e}")
+        event={"event":"answer_submitted","vertical":vertical,"score":score,"latency_ms":latency_ms,"variant":variant_id}
+        log_local(event)
+        try:
+            bq.write(event)
+        except Exception as e:
+            logging.warning(f"BQ write failed: {e}")
+        return {"status":"accepted","score":score,"latency_ms":latency_ms,"variant":variant_id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Unexpected error in post_answer: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}")
 
 @app.get("/metrics")
 def get_metrics():
