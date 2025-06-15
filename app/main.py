@@ -25,8 +25,12 @@ def score_payload(data):
     return round(0.6*cred+0.4*dti,2)
 
 def log_local(event):
-    with EVENT_LOG.open("a") as f:
-        f.write(json.dumps(event)+"\n")
+    try:
+        with EVENT_LOG.open("a") as f:
+            f.write(json.dumps(event)+"\n")
+    except Exception as e:
+        # Vercel filesystem is read-only, so local logging may fail
+        logging.warning(f"Local logging failed: {e}")
 
 @app.get("/registry")
 def registry():
