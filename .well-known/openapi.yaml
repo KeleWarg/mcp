@@ -1,4 +1,4 @@
-openapi: "3.0.1"
+openapi: "3.1.0"
 info:
   title: "Kele LeadGen MCP Gateway"
   version: "0.5"
@@ -9,6 +9,7 @@ servers:
 paths:
   /registry:
     get:
+      operationId: "listVerticals"
       summary: "List available verticals"
       description: "Returns a list of available loan verticals"
       responses:
@@ -25,6 +26,7 @@ paths:
                       type: string
   /personal_loan/question/{step}:
     get:
+      operationId: "getQuestion"
       summary: "Get question for a specific step"
       description: "Retrieve a question object for the given step in the loan application"
       parameters:
@@ -67,6 +69,7 @@ paths:
           description: "Step not found"
   /personal_loan/answer:
     post:
+      operationId: "submitLoanApplication"
       summary: "Submit loan application answers"
       description: "Submit complete loan application and receive approval score"
       requestBody:
@@ -99,6 +102,7 @@ paths:
           description: "Validation error - missing required fields"
   /metrics:
     get:
+      operationId: "getMetrics"
       summary: "Get usage metrics"
       description: "Returns token usage and other metrics"
       responses:
