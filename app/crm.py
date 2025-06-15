@@ -1,11 +1,8 @@
 
-"""CRM forwarding helper."""
 import os, requests, logging
-
 def send(payload: dict):
     crm_url = os.getenv("CRM_URL")
     if not crm_url:
-        logging.info("CRM_URL not set; skipping forward.")
         return
     try:
         r = requests.post(crm_url, json=payload, timeout=5)

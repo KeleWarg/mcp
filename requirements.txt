@@ -1,4 +1,6 @@
 fastapi
 uvicorn[standard]
 requests
-google-cloud-bigquery ; extra == "bigquery"
+google-cloud-bigquery>=3.0.0 ; extra == "bigquery"
+pytest
+pytest-asyncio
