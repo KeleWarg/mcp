@@ -5,31 +5,70 @@ info:
   description: "API for conversational personal-loan lead generation."
 servers:
   - url: https://mcp-sandy.vercel.app
+    description: "Production server"
 paths:
   /registry:
     get:
-      summary: "List verticals"
+      summary: "List available verticals"
+      description: "Returns a list of available loan verticals"
       responses:
         "200":
-          description: "OK"
+          description: "List of verticals"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  verticals:
+                    type: array
+                    items:
+                      type: string
   /personal_loan/question/{step}:
     get:
-      summary: "Get question object"
+      summary: "Get question for a specific step"
+      description: "Retrieve a question object for the given step in the loan application"
       parameters:
         - name: step
           in: path
           required: true
-          schema: { type: integer }
+          schema: 
+            type: integer
+            minimum: 0
+          description: "Step number in the application process"
         - name: variant
           in: query
           required: false
-          schema: { type: string }
+          schema: 
+            type: string
+          description: "Optional variant identifier"
       responses:
         "200":
           description: "Question object"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  prompt:
+                    type: string
+                  type:
+                    type: string
+                  validation:
+                    type: object
+                  allowedValues:
+                    type: array
+                    items:
+                      type: string
+                  variant:
+                    type: string
+        "404":
+          description: "Step not found"
   /personal_loan/answer:
     post:
-      summary: "Submit answers"
+      summary: "Submit loan application answers"
+      description: "Submit complete loan application and receive approval score"
       requestBody:
         required: true
         content:
@@ -38,13 +77,40 @@ paths:
               $ref: "#/components/schemas/AnswerPayload"
       responses:
         "200":
-          description: "Accepted"
+          description: "Application accepted with score"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "accepted"
+                  score:
+                    type: number
+                    example: 0.69
+                  latency_ms:
+                    type: number
+                    example: 1.3
+                  variant:
+                    type: string
+                    nullable: true
+        "422":
+          description: "Validation error - missing required fields"
   /metrics:
     get:
-      summary: "Token-usage metrics"
+      summary: "Get usage metrics"
+      description: "Returns token usage and other metrics"
       responses:
         "200":
-          description: "Metrics"
+          description: "Usage metrics"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  usage:
+                    type: object
 components:
   schemas:
     AnswerPayload:
