@@ -1,0 +1,82 @@
+{
+  "@context": "https://schema.forbes.com/leadgen/v1",
+  "@type": "LeadForm",
+  "vertical": "personal_loan",
+  "version": "2025-06-15",
+  "fields": [
+    {
+      "@id": "loan_amount",
+      "@type": "MonetaryAmount",
+      "prompt": "How much do you want to borrow?",
+      "validation": {
+        "minValue": 1000,
+        "maxValue": 100000,
+        "currency": "USD"
+      },
+      "priority": "P0"
+    },
+    {
+      "@id": "loan_purpose",
+      "@type": "LoanOrCredit",
+      "prompt": "What will you use the loan for?",
+      "allowedValues": [
+        "debt_consolidation",
+        "home_improvement",
+        "major_purchase",
+        "other"
+      ],
+      "priority": "P0"
+    },
+    {
+      "@id": "credit_score_band",
+      "@type": "CreditScore",
+      "prompt": "What\u2019s your credit score range?",
+      "allowedValues": [
+        "<580",
+        "580-669",
+        "670-739",
+        "740-799",
+        "800+"
+      ],
+      "priority": "P0"
+    },
+    {
+      "@id": "employment_status",
+      "@type": "EmploymentStatusType",
+      "prompt": "Are you employed, self\u2011employed, or other?",
+      "allowedValues": [
+        "employed",
+        "self_employed",
+        "unemployed",
+        "retired",
+        "other"
+      ],
+      "priority": "P0"
+    },
+    {
+      "@id": "annual_income",
+      "@type": "MonetaryAmount",
+      "prompt": "Your annual income before tax?",
+      "validation": {
+        "minValue": 0,
+        "currency": "USD"
+      },
+      "priority": "P0"
+    },
+    {
+      "@id": "state",
+      "@type": "AdministrativeArea",
+      "prompt": "Which state do you live in?",
+      "validation": {
+        "pattern": "^[A-Z]{2}$"
+      },
+      "priority": "P0"
+    },
+    {
+      "@id": "consent_tcpa",
+      "@type": "AgreeAction",
+      "prompt": "By providing your phone number you agree to receive automated calls and texts\u2014this consent is not a condition of purchase.",
+      "priority": "P0"
+    }
+  ]
+}
