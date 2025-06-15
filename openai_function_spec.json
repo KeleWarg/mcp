@@ -1,0 +1,45 @@
+{
+  "name": "submit_personal_loan_answers",
+  "description": "Submit personal loan application answers to get a loan score and approval status",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "loan_amount": {
+        "type": "number",
+        "description": "The amount to borrow in USD",
+        "minimum": 1000,
+        "maximum": 100000
+      },
+      "loan_purpose": {
+        "type": "string",
+        "description": "What the loan will be used for",
+        "enum": ["debt_consolidation", "home_improvement", "major_purchase", "other"]
+      },
+      "credit_score_band": {
+        "type": "string",
+        "description": "Credit score range",
+        "enum": ["<580", "580-669", "670-739", "740-799", "800+"]
+      },
+      "employment_status": {
+        "type": "string",
+        "description": "Current employment status",
+        "enum": ["employed", "self_employed", "unemployed", "retired", "other"]
+      },
+      "annual_income": {
+        "type": "number",
+        "description": "Annual income before tax in USD",
+        "minimum": 0
+      },
+      "state": {
+        "type": "string",
+        "description": "Two-letter state code (e.g., CA, NY)",
+        "pattern": "^[A-Z]{2}$"
+      },
+      "consent_tcpa": {
+        "type": "boolean",
+        "description": "Consent to receive automated calls and texts"
+      }
+    },
+    "required": ["loan_amount", "loan_purpose", "credit_score_band", "employment_status", "annual_income", "state", "consent_tcpa"]
+  }
+} 
