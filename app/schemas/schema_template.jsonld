@@ -1,0 +1,16 @@
+{
+  "@context": "https://schema.forbes.com/leadgen/v1",
+  "@type": "LeadForm",
+  "vertical": "<vertical_name>",
+  "version": "YYYY-MM-DD",
+  "fields": [
+    {
+      "@id": "field_id",
+      "@type": "DataType",
+      "prompt": "Question shown to user",
+      "validation": {},
+      "allowedValues": [],
+      "priority": "P0"
+    }
+  ]
+}
